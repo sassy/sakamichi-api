@@ -9,9 +9,12 @@ class NogizakaMemberTable(Base):
     __tablename__ = 'nogizaka'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(30), nullable=False)
+    namekana = Column(String(30), nullable=False)
+    birthday = Column(String(30), nullable=False)
 
 
 def main():
+    Base.metadata.drop_all(bind=ENGINE)
     Base.metadata.create_all(bind=ENGINE)
 
 if __name__ == "__main__":

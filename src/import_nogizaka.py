@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import Column, Integer, String
 from pydantic import BaseModel
 from db import Base
 from db import ENGINE
@@ -28,16 +27,28 @@ def namelist():
         if unit.find('span',  {"class": "main"}) is not None:
             kanji = unit.find('span',  {"class": "main"}).string
             kana = unit.find('span',  {"class": "sub"}).string if unit.find('span',  {"class": "sub"}) is not None else unit.find('span',  {"class": "sub2"}).string
-            ret.append(kanji)
+            url = urljoin(base_url, unit.find('a')['href'])
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            next_html = urllib.request.urlopen(req).read()
+            soup2 = BeautifulSoup(next_html, "html.parser")
+            birthday = soup2.find_all("dd")[0].string
+            ret.append({
+                "name" : kanji,
+                "name_kana" : kana,
+                "birthday" : birthday,
+            })
     return ret
             
 
 def main():
-    Base.metadata.create_all(bind=ENGINE)
+    session.execute('truncate table {}'.format(NogizakaMemberTable.__table__))
     ret = namelist()
     for elem in ret:
+        print(elem)
         member = NogizakaMemberTable()
-        member.name = elem
+        member.name = elem["name"]
+        member.namekana = elem["name_kana"]
+        member.birthday = elem["birthday"]
         session.add(member)
         session.commit()
 

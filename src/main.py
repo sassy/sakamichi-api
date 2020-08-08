@@ -18,3 +18,8 @@ app.add_middleware(
 def read_members():
     members = session.query(NogizakaMemberTable).all()
     return members
+
+@app.get("/nogizaka/members/{user_id}")
+def read_member(user_id: int):
+    member = session.query(NogizakaMemberTable).filter(NogizakaMemberTable.id == user_id).first()
+    return member
