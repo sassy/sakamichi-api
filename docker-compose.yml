@@ -12,7 +12,7 @@ services:
         depends_on: 
             - db
     db:
-        image: mysql:5.7
+        image: mysql:8.0
         environment: 
             MYSQL_DATABASE: sakamichi_db
             MYSQL_USER: user
