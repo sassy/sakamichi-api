@@ -2,4 +2,4 @@ mysqlclient
 sqlalchemy
 uvicorn
 fastapi
-beautifulsoup4==4.9.1
+beautifulsoup4==4.12.2
